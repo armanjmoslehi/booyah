@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note Board</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #new-note-section {
+      margin-bottom: 20px;
+    }
+    .note-item {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Note Board</h1>
+
+  <!-- New Note Section -->
+  <div id="new-note-section">
+    <h2>Post a New Note</h2>
+    <input type="text" id="note-title" placeholder="Title" required>
+    <textarea id="note-content" placeholder="Content" required></textarea>
+    <button id="post-note-btn" onclick="postNote()">Post Note</button>
+  </div>
+
+  <!-- Notes List -->
+  <div id="notes-list">
+    <h2>Notes:</h2>
+    <!-- Notes will be displayed here -->
+  </div>
+
+  <!-- Firebase Scripts (insert after including Firebase SDKs) -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+  <script src="js/notes.js"></script>
+  <script src="js/booyah.js"></script>
+
+
+
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyBMiDKDPnkFWZGqrcgMRa4f6GxohGbvqyg",
+      authDomain: "booyah2-f00fc.firebaseapp.com",
+      projectId: "booyah2-f00fc",
+      storageBucket: "booyah2-f00fc.firebasestorage.app",
+      messagingSenderId: "278778285303",
+      appId: "1:278778285303:web:f57c7297a1097ee4d6d7f2",
+      measurementId: "G-2WKECGFX18"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    function postNote() {
+    const title = document.getElementById("note-title").value;
+    const content = document.getElementById("note-content").value;
+
+    if (title && content) {
+      db.collection("notes").add({
+        title: title,
+        content: content,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      }).then(() => {
+        alert("Note posted successfully!");
+        document.getElementById("note-title").value = '';
+        document.getElementById("note-content").value = '';
+      }).catch((error) => {
+        console.error("Error posting note:", error);
+      });
+    } else {
+      alert("Please fill in both title and content.");
+    }
+  }
+
+  // Function to display notes (already defined)
+  window.onload = displayNotes;
+  </script>
+
+</body>
+</html>
